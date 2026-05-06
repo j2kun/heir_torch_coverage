@@ -1,0 +1,9 @@
+operators/bmm/model_annotated.mlir:6:10: error: 'linalg.batch_matmul' op expected operand #0 rank (2) to match the result rank of indexing_map (3)
+    %2 = linalg.batch_matmul ins(%arg0, %arg1 : tensor<2x64x32xf32>, tensor<2x32x10xf32>) outs(%1 : tensor<2x64x10xf32>) -> tensor<2x64x10xf32>
+         ^
+note: see current operation: %2 = "linalg.batch_matmul"(%arg2, %arg3, %0) <{indexing_maps = [affine_map<(d0, d1, d2, d3) -> (d0, d1, d3)>, affine_map<(d0, d1, d2, d3) -> (d0, d3, d2)>, affine_map<(d0, d1, d2, d3) -> (d0, d1, d2)>], operandSegmentSizes = array<i32: 2, 1>}> ({
+^bb0(%arg4: f32, %arg5: f32, %arg6: f32):
+  %3 = "arith.mulf"(%arg4, %arg5) <{fastmath = #arith.fastmath<none>}> : (f32, f32) -> f32
+  %4 = "arith.addf"(%arg6, %3) <{fastmath = #arith.fastmath<none>}> : (f32, f32) -> f32
+  "linalg.yield"(%4) : (f32) -> ()
+}) : (tensor<4x1024xf32>, tensor<4x1024xf32>, tensor<4x1024xf32>) -> tensor<4x1024xf32>

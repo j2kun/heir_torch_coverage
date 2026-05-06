@@ -1,0 +1,9 @@
+operators/eq/model_annotated.mlir:3:3: error: failed to legalize operation 'secret.generic' that was explicitly marked illegal
+  func.func @main(%arg0: tensor<1x64xf32> {secret.secret}, %arg1: tensor<1x64xf32> {secret.secret}) -> tensor<1x64xi1> {
+  ^
+note: see current operation:
+%0 = "secret.generic"(<<UNKNOWN SSA VALUE>>, <<UNKNOWN SSA VALUE>>) ({
+^bb0(%arg2: tensor<1x1024xf32>, %arg3: tensor<1x1024xf32>):
+  %1 = "arith.cmpf"(%arg2, %arg3) <{fastmath = #arith.fastmath<none>, predicate = 1 : i64}> {degree = 3 : i32, domain_lower = -2.000000e+00 : f64, domain_upper = 3.000000e+00 : f64, mgmt.mgmt = #mgmt.mgmt<level = 0, scale = 45>} : (tensor<1x1024xf32>, tensor<1x1024xf32>) -> tensor<1x1024xi1>
+  "secret.yield"(%1) : (tensor<1x1024xi1>) -> ()
+}) {__resattrs = [{mgmt.mgmt = #mgmt.mgmt<level = 0, scale = 45>}]} : (!secret.secret<tensor<1x1024xf32>>, !secret.secret<tensor<1x1024xf32>>) -> !secret.secret<tensor<1x1024xi1>>

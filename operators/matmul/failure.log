@@ -1,0 +1,9 @@
+operators/matmul/model_annotated.mlir:6:10: error: 'linalg.vecmat' op expected operand #0 rank (2) to match the result rank of indexing_map (1)
+    %2 = linalg.matmul ins(%arg0, %arg1 : tensor<1x64xf32>, tensor<64x10xf32>) outs(%1 : tensor<1x10xf32>) -> tensor<1x10xf32>
+         ^
+note: see current operation: %3 = "linalg.vecmat"(%arg2, %2, %0) <{operandSegmentSizes = array<i32: 2, 1>}> ({
+^bb0(%arg3: f32, %arg4: f32, %arg5: f32):
+  %4 = "arith.mulf"(%arg3, %arg4) <{fastmath = #arith.fastmath<none>}> : (f32, f32) -> f32
+  %5 = "arith.addf"(%arg5, %4) <{fastmath = #arith.fastmath<none>}> : (f32, f32) -> f32
+  "linalg.yield"(%5) : (f32) -> ()
+}) {linalg.memoized_indexing_maps = [affine_map<(d0, d1) -> (d1)>, affine_map<(d0, d1) -> (d1, d0)>, affine_map<(d0, d1) -> (d0)>], secret.kernel = #secret.kernel<name = "VecmatDiagonal", force = false>} : (tensor<1x1024xf32>, tensor<16x1024xf32>, tensor<1x1024xf32>) -> tensor<1x1024xf32>

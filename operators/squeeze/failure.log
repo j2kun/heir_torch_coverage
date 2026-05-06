@@ -1,0 +1,3 @@
+operators/squeeze/model_annotated.mlir:1:1: error: No mgmt attribute found in the module for B/FV
+module {
+^

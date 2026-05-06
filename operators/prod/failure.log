@@ -1,0 +1,2 @@
+<unknown>:0: error: 'tensor.extract' op incorrect number of indices for extract_element
+<unknown>:0: note: see current operation: %10 = "tensor.extract"(%0, %9) : (tensor<1x1024xf32>, index) -> f32

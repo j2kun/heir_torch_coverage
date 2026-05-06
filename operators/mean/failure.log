@@ -1,0 +1,4 @@
+operators/mean/model_annotated.mlir:15:10: error: 'tensor_ext.assign_layout' op requires tensor rank to match the layout's domain size, but found rank 1 and domain size 0
+    %3 = linalg.generic {indexing_maps = [#map2, #map2], iterator_types = ["parallel"]} ins(%2 : tensor<1xf32>) outs(%0 : tensor<1xf32>) {
+         ^
+note: see current operation: %7 = "tensor_ext.assign_layout"(%1) <{domainSchedule = array<i64>, layout = #tensor_ext.layout<"{ [] -> [ct, slot] : ct = 0 and (slot) mod 64 = 0 and 0 <= slot <= 1023 }">}> {tensor_ext.layout = #tensor_ext.layout<"{ [] -> [ct, slot] : ct = 0 and (slot) mod 64 = 0 and 0 <= slot <= 1023 }">} : (tensor<1xf32>) -> tensor<1xf32>

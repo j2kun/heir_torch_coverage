@@ -1,0 +1,4 @@
+operators/mm/model_annotated.mlir:6:10: error: 'arith.mulf' op requires the same type for all operands and results
+    %2 = linalg.matmul ins(%arg0, %arg1 : tensor<64x32xf32>, tensor<32x10xf32>) outs(%1 : tensor<64x10xf32>) -> tensor<64x10xf32>
+         ^
+note: see current operation: %19 = "arith.mulf"(%18, %arg2) <{fastmath = #arith.fastmath<none>}> : (tensor<1x1024xf32>, tensor<2x1024xf32>) -> tensor<1x1024xf32>

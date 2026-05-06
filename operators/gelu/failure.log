@@ -1,0 +1,9 @@
+operators/gelu/model_annotated.mlir:3:3: error: failed to legalize operation 'secret.generic' that was explicitly marked illegal
+  func.func @main(%arg0: tensor<1x64xf32> {secret.secret}) -> tensor<1x64xf32> {
+  ^
+note: see current operation:
+%22 = "secret.generic"(<<UNKNOWN SSA VALUE>>) ({
+^bb0(%arg35: tensor<1x1024xf32>):
+  %85 = "arith.divf"(%arg35, %1) <{fastmath = #arith.fastmath<none>}> {degree = 3 : i32, domain_lower = -2.000000e+00 : f64, domain_upper = 3.000000e+00 : f64, mgmt.mgmt = #mgmt.mgmt<level = 6, scale = 45>} : (tensor<1x1024xf32>, tensor<1x1024xf32>) -> tensor<1x1024xf32>
+  "secret.yield"(%85) : (tensor<1x1024xf32>) -> ()
+}) {__resattrs = [{mgmt.mgmt = #mgmt.mgmt<level = 6, scale = 45>}]} : (!secret.secret<tensor<1x1024xf32>>) -> !secret.secret<tensor<1x1024xf32>>

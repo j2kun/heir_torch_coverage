@@ -1,0 +1,2 @@
+Segmentation fault (core dumped) during:
+./venv/bin/heir-opt "--annotate-module=backend=openfhe scheme=ckks" --torch-linalg-to-ckks="ciphertext-degree=1024" --scheme-to-openfhe operators/chunk/model_annotated.mlir > operators/chunk/model_openfhe.mlir

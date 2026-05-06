@@ -1,0 +1,7 @@
+operators/transpose/model_annotated.mlir:4:19: error: 'linalg.transpose' op size of permutation 4 does not match the argument rank 2
+    %transposed = linalg.transpose ins(%arg0 : tensor<1x3x16x16xf32>) outs(%0 : tensor<1x16x3x16xf32>) permutation = [0, 2, 1, 3]
+                  ^
+note: see current operation: %2 = "linalg.transpose"(%arg1, %1) <{permutation = array<i64: 0, 2, 1, 3>}> ({
+^bb0(%arg2: f32, %arg3: f32):
+  "linalg.yield"(%arg2) : (f32) -> ()
+}) : (tensor<1x1024xf32>, tensor<1x1024xf32>) -> tensor<1x1024xf32>

@@ -1,0 +1,9 @@
+operators/avgpool2d/model_annotated.mlir:9:10: error: 'linalg.conv_2d_nchw_fchw' op expected operand #0 rank (2) to match the result rank of indexing_map (4)
+    %3 = linalg.pooling_nchw_sum {dilations = dense<1> : vector<2xi64>, strides = dense<2> : vector<2xi64>} ins(%arg0, %2 : tensor<1x4x16x16xf32>, tensor<2x2xf32>) outs(%1 : tensor<1x4x8x8xf32>) -> tensor<1x4x8x8xf32>
+         ^
+note: see current operation: %4 = "linalg.conv_2d_nchw_fchw"(%arg1, %3, %0) <{dilations = dense<1> : vector<2xi64>, operandSegmentSizes = array<i32: 2, 1>, strides = dense<2> : vector<2xi64>}> ({
+^bb0(%arg2: f32, %arg3: f32, %arg4: f32):
+  %5 = "arith.mulf"(%arg2, %arg3) <{fastmath = #arith.fastmath<none>}> : (f32, f32) -> f32
+  %6 = "arith.addf"(%arg4, %5) <{fastmath = #arith.fastmath<none>}> : (f32, f32) -> f32
+  "linalg.yield"(%6) : (f32) -> ()
+}) {linalg.memoized_indexing_maps = [affine_map<(d0, d1, d2, d3, d4, d5, d6) -> (d0, d4, d2 * 2 + d5, d3 * 2 + d6)>, affine_map<(d0, d1, d2, d3, d4, d5, d6) -> (d1, d4, d5, d6)>, affine_map<(d0, d1, d2, d3, d4, d5, d6) -> (d0, d1, d2, d3)>], secret.kernel = #secret.kernel<name = "MatvecDiagonal", force = false>} : (tensor<1x1024xf32>, tensor<256x1024xf32>, tensor<1x1024xf32>) -> tensor<1x1024xf32>

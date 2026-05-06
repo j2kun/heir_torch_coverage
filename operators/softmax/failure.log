@@ -1,0 +1,12 @@
+operators/softmax/model_annotated.mlir:13:12: error: 'linalg.reduce' op expected equal number of inputs and outputs (required by SameVariadicOperandSize), got 2 input(s) and 1 output(s)
+    %4:2 = linalg.generic {domain_lower = -2.0 : f64, domain_upper = 3.0 : f64, degree = 3 : i32, indexing_maps = [#map, #map1, #map1], iterator_types = ["parallel", "reduction"]} ins(%arg0 : tensor<1x64xf32>) outs(%3, %1 : tensor<1xf32>, tensor<1xi64>) {
+           ^
+note: see current operation: %4:2 = "linalg.reduce"(%3, %0, %1) <{dimensions = array<i64: 0>}> ({
+^bb0(%arg9: f32, %arg10: f32, %arg11: i64):
+  %16 = "linalg.index"() <{dim = 0 : i64}> : () -> index
+  %17 = "arith.index_cast"(%16) : (index) -> i64
+  %18 = "arith.maximumf"(%arg9, %arg10) <{fastmath = #arith.fastmath<none>}> : (f32, f32) -> f32
+  %19 = "arith.cmpf"(%arg9, %arg10) <{fastmath = #arith.fastmath<none>, predicate = 2 : i64}> : (f32, f32) -> i1
+  %20 = "arith.select"(%19, %17, %arg11) : (i1, i64, i64) -> i64
+  "linalg.yield"(%18, %20) : (f32, i64) -> ()
+}) : (tensor<64xf32>, tensor<f32>, tensor<i64>) -> (tensor<f32>, tensor<i64>)
