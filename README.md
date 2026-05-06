@@ -71,16 +71,24 @@ list of ops that need to be supported.
 | Operator    | Status | Notes                                                                      |
 | :---------- | :----- | :------------------------------------------------------------------------- |
 | Add         | ✅      |                                                                            |
+| AvgPool1d   | ❌      | Layout assignment error: rank 1 vs domain size 3                           |
 | AvgPool2d   | ❌      | Rank mismatch during lowering to conv_2d                                   |
+| AvgPool3d   | ❌      | Layout assignment error: rank 3 vs domain size 5                           |
+| BatchNorm1d | ❌      | Layout assignment error: rank 1 vs domain size 2                           |
 | BatchNorm2d | ❌      | Layout assignment error during conversion: rank 1 vs domain size 3         |
+| BatchNorm3d | ❌      | Layout assignment error: rank 1 vs domain size 4                           |
 | Cat         | ❌      | Layout assignment error: rank 4 vs domain size 5                           |
+| Conv1d      | ❌      | Rank mismatch in linalg.conv_1d_ncw_fcw: rank 2 vs indexing map rank 3     |
 | Conv2d      | ✅      | Reduced input size to 16x16 to fit ciphertext degree 1024                  |
+| Conv3d      | ❌      | Rank mismatch in linalg.conv_3d_ncdhw_fcdhw: rank 2 vs indexing map rank 5 |
 | Flatten     | ❌      | Error: No mgmt attribute found in the module for B/FV                      |
 | GELU        | ❌      | Failed to legalize secret.generic containing arith.divf                    |
 | LeakyReLU   | ❌      | Layout assignment error: rank 1 vs domain size 0                           |
 | Linear      | ✅      |                                                                            |
 | Matmul      | ❌      | Rank mismatch in linalg.vecmat: rank 2 vs indexing map rank 1              |
+| MaxPool1d   | ❌      | Layout assignment error: rank 1 vs domain size 3                           |
 | MaxPool2d   | ❌      | Layout assignment error: rank 2 vs domain size 4                           |
+| MaxPool3d   | ❌      | Layout assignment error: rank 3 vs domain size 4                           |
 | Mean        | ❌      | Layout assignment error: rank 1 vs domain size 0                           |
 | Mul         | ✅      |                                                                            |
 | PReLU       | ❌      | Layout assignment error: rank 0 vs domain size 1                           |
