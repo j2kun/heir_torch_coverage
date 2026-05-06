@@ -16,12 +16,12 @@ pip install /path/to/torch_mlir-20260308.745-cp312-cp312-manylinux_2_27_x86_64.m
 ## For each torch operator
 
 Create a torch model in a standalone file with a single torch operator, and then
-populate any necessary weights with arbitrary data. Add an export call
-similar to the one in `demo_export.py` and for this model and run it
-to produce an MLIR file for linalg on tensors.
+populate any necessary weights with arbitrary data. Add an export call similar
+to the one in `demo_export.py` and for this model and run it to produce an MLIR
+file for linalg on tensors.
 
-Manually add `{secret.secret}` annotation to all function arguments in
-input mlir file and manually add `domain_lower`, `domain_upper`, and `degree`
+Manually add `{secret.secret}` annotation to all function arguments in input
+mlir file and manually add `domain_lower`, `domain_upper`, and `degree`
 annotation to each activation op in `model.mlir`. E.g., a ReLU looks like this:
 
 ```mlir
@@ -66,60 +66,44 @@ If this succeeds, we're done for that op.
 If it fails, record the failure in a log file and add the failing torch op to a
 list of ops that need to be supported.
 
-
 ## heir-opt Coverage Results
 
 | Operator    | Status  | Notes                                                |
 | :---------- | :------ | :--------------------------------------------------- |
 | Add         | Success |                                                      |
 | AvgPool2d   | Failed  | Rank mismatch during lowering to conv_2d             |
-| BatchNorm2d | Failed  | Layout assignment error during conversion: rank 1 vs |
-:             :         : domain size 3                                        :
+| BatchNorm2d | Failed  | Layout assignment error during conversion: rank 1 vs domain size 3 |
 | Cat         | Failed  | Layout assignment error: rank 4 vs domain size 5     |
-| Conv2d      | Success | Reduced input size to 16x16 to fit ciphertext degree |
-:             :         : 1024                                                 :
-| Flatten     | Failed  | Error: No mgmt attribute found in the module for     |
-:             :         : B/FV                                                 :
-| GELU        | Failed  | Failed to legalize secret.generic containing         |
-:             :         : arith.divf                                           :
+| Conv2d      | Success | Reduced input size to 16x16 to fit ciphertext degree 1024 |
+| Flatten     | Failed  | Error: No mgmt attribute found in the module for B/FV |
+| GELU        | Failed  | Failed to legalize secret.generic containing arith.divf |
 | LeakyReLU   | Failed  | Layout assignment error: rank 1 vs domain size 0     |
 | Linear      | Success |                                                      |
-| Matmul      | Failed  | Rank mismatch in linalg.vecmat: rank 2 vs indexing   |
-:             :         : map rank 1                                           :
+| Matmul      | Failed  | Rank mismatch in linalg.vecmat: rank 2 vs indexing map rank 1 |
 | MaxPool2d   | Failed  | Layout assignment error: rank 2 vs domain size 4     |
 | Mean        | Failed  | Layout assignment error: rank 1 vs domain size 0     |
 | Mul         | Success |                                                      |
 | PReLU       | Failed  | Layout assignment error: rank 0 vs domain size 1     |
-| Permute     | Failed  | Layout assignment error: rank 2 vs permutation size  |
-:             :         : 4                                                    :
+| Permute     | Failed  | Layout assignment error: rank 2 vs permutation size 4 |
 | ReLU        | Success |                                                      |
 | SiLU        | Success |                                                      |
 | Sigmoid     | Success |                                                      |
-| Sum         | Failed  | Error: 'tensor.extract' op incorrect number of       |
-:             :         : indices for extract_element                          :
+| Sum         | Failed  | Error: 'tensor.extract' op incorrect number of indices for extract_element |
 | Tanh        | Success |                                                      |
-| bmm         | Failed  | Rank mismatch in linalg.batch_matmul: rank 2 vs      |
-:             :         : indexing map rank 3                                  :
+| bmm         | Failed  | Rank mismatch in linalg.batch_matmul: rank 2 vs indexing map rank 3 |
 | chunk       | Failed  | Segmentation fault during heir-opt                   |
-| div         | Failed  | Failed to legalize secret.generic containing         |
-:             :         : arith.divf                                           :
-| eq          | Failed  | Failed to legalize secret.generic containing         |
-:             :         : arith.cmpf                                           :
+| div         | Failed  | Failed to legalize secret.generic containing arith.divf |
+| eq          | Failed  | Failed to legalize secret.generic containing arith.cmpf |
 | exp         | Success |                                                      |
 | gt          | Success | Legalized with high-degree polynomial approximation  |
 | log         | Success |                                                      |
 | lt          | Success | Legalized with high-degree polynomial approximation  |
-| mm          | Failed  | Type mismatch in arith.mulf during lowering: 1x1024  |
-:             :         : vs 2x1024                                            :
+| mm          | Failed  | Type mismatch in arith.mulf during lowering: 1x1024 vs 2x1024 |
 | neg         | Success |                                                      |
-| prod        | Failed  | Error: 'tensor.extract' op incorrect number of       |
-:             :         : indices for extract_element                          :
+| prod        | Failed  | Error: 'tensor.extract' op incorrect number of indices for extract_element |
 | select      | Success | Implemented as multiplication by mask                |
-| softmax     | Failed  | Error in linalg.reduce: expected equal number of     |
-:             :         : inputs and outputs                                   :
+| softmax     | Failed  | Error in linalg.reduce: expected equal number of inputs and outputs |
 | sqrt        | Success |                                                      |
-| squeeze     | Failed  | Error: No mgmt attribute found in the module for     |
-:             :         : B/FV                                                 :
+| squeeze     | Failed  | Error: No mgmt attribute found in the module for B/FV |
 | sub         | Success |                                                      |
-| transpose   | Failed  | Layout assignment error: rank 2 vs permutation size  |
-:             :         : 4                                                    :
+| transpose   | Failed  | Layout assignment error: rank 2 vs permutation size 4 |
